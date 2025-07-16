@@ -63,63 +63,67 @@
     <url>https://github.com/jenkinsci/pipeline-config-plugin</url>
     <tag>HEAD</tag>
   </scm>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.gmaven</groupId>
-        <artifactId>gmaven-plugin</artifactId>
-        <version>1.4</version>
-        <configuration>
-          <providerSelection>1.8</providerSelection>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generateStubs</goal>
-              <goal>compile</goal>
-              <goal>generateTestStubs</goal>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <systemProperties>
-            <property>
-              <name>hudson.udp</name>
-              <value>33849</value>
-            </property>
-          </systemProperties>
-          <argLine>-Xmx4g -XX:MaxPermSize=256m</argLine>
-          <reuseForks>true</reuseForks>
-          <forkCount>${concurrency}</forkCount>
-          <rerunFailingTestsCount>3</rerunFailingTestsCount>
-        </configuration>
-      </plugin>
-    </plugins>
-  <groupId>org.codehaus.mojo</groupId>
-  <artifactId>build-helper-maven-plugin</artifactId>
-  <version>3.2.0</version>
-  <executions>
-    <execution>
-      <id>create-meta-inf-annotations-dir</id>
-      <phase>generate-sources</phase>
-      <goals>
-        <goal>mkdir</goal>
-      </goals>
+  
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.codehaus.gmaven</groupId>
+      <artifactId>gmaven-plugin</artifactId>
+      <version>1.4</version>
       <configuration>
-        <directories>
-          <directory>${project.build.outputDirectory}/META-INF/annotations</directory>
-        </directories>
+        <providerSelection>1.8</providerSelection>
       </configuration>
-    </execution>
-  </executions>
-</plugin>
-</plugin>
-  </build>
+      <executions>
+        <execution>
+          <goals>
+            <goal>generateStubs</goal>
+            <goal>compile</goal>
+            <goal>generateTestStubs</goal>
+            <goal>testCompile</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+
+    <plugin>
+      <artifactId>maven-surefire-plugin</artifactId>
+      <configuration>
+        <systemProperties>
+          <property>
+            <name>hudson.udp</name>
+            <value>33849</value>
+          </property>
+        </systemProperties>
+        <argLine>-Xmx4g -XX:MaxPermSize=256m</argLine>
+        <reuseForks>true</reuseForks>
+        <forkCount>${concurrency}</forkCount>
+        <rerunFailingTestsCount>3</rerunFailingTestsCount>
+      </configuration>
+    </plugin>
+
+    <!-- ✅ Correct placement of build-helper-maven-plugin -->
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>build-helper-maven-plugin</artifactId>
+      <version>3.2.0</version>
+      <executions>
+        <execution>
+          <id>create-meta-inf-annotations-dir</id>
+          <phase>generate-sources</phase>
+          <goals>
+            <goal>mkdir</goal>
+          </goals>
+          <configuration>
+            <directories>
+              <directory>${project.build.outputDirectory}/META-INF/annotations</directory>
+            </directories>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+
+  </plugins>
+</build>
 
   <dependencies>
     <dependency>
