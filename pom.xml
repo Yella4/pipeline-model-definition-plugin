@@ -3,42 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.jenkins-ci.plugins</groupId>
-    <artifactId>plugin</artifactId>
-    <version>2.13</version>
-    <relativePath/>
-  </parent>
+  <!-- your existing parent, groupId, artifactId, version, etc. -->
 
-  <groupId>org.jenkinsci.plugins</groupId>
-  <artifactId>pipeline-model-definition</artifactId>
-  <version>0.2-SNAPSHOT</version>
-  <packaging>hpi</packaging>
-  <name>Pipeline: Model Definition</name>
-  <description>An opinionated, declarative Pipeline</description>
-  <url>https://wiki.jenkins-ci.org/display/JENKINS/Pipeline+Model+Definition+Plugin</url>
+  <properties>
+    <!-- Set output directory properly -->
+    <project.build.outputDirectory>${project.build.directory}/classes</project.build.outputDirectory>
 
-  <licenses>
-    <license>
-      <name>MIT</name>
-      <url>http://opensource.org/licenses/MIT</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <developers>
-    <developer>
-      <id>abayer</id>
-      <name>Andrew Bayer</name>
-    </developer>
-  </developers>
-
-  <scm>
-    <connection>scm:git:git@github.com/jenkinsci/pipeline-config-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:jenkinsci/pipeline-config-plugin.git</developerConnection>
-    <url>https://github.com/jenkinsci/pipeline-config-plugin</url>
-    <tag>HEAD</tag>
-  </scm>
+    <jenkins.version>2.7.1</jenkins.version>
+    <java.level>7</java.level>
+    <groovy.version>2.4.7</groovy.version>
+  </properties>
 
   <build>
     <plugins>
@@ -77,41 +51,35 @@
         </configuration>
       </plugin>
 
-     <properties>
-  <!-- Make sure outputDirectory is set properly -->
-  <project.build.outputDirectory>${project.build.directory}/classes</project.build.outputDirectory>
-</properties>
+      <!-- build-helper plugin to create META-INF/annotations directory -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>create-meta-inf-annotations-dir</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>mkdir</goal>
+            </goals>
+            <configuration>
+              <directories>
+                <directory>${project.build.outputDirectory}/META-INF/annotations</directory>
+              </directories>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
-<build>
-  <plugins>
-    <!-- Other plugins -->
+      <!-- other plugins here -->
 
-    <!-- Replace exec plugin mkdir call with build-helper plugin -->
-    <plugin>
-      <groupId>org.codehaus.mojo</groupId>
-      <artifactId>build-helper-maven-plugin</artifactId>
-      <version>3.3.0</version>
-      <executions>
-        <execution>
-          <id>create-meta-inf-annotations-dir</id>
-          <phase>generate-sources</phase>
-          <goals>
-            <goal>mkdir</goal>
-          </goals>
-          <configuration>
-            <directories>
-              <directory>${project.build.outputDirectory}/META-INF/annotations</directory>
-            </directories>
-          </configuration>
-        </execution>
-      </executions>
-    </plugin>
+    </plugins>
+  </build>
 
-    <!-- Remove or comment out your exec-maven-plugin mkdir call -->
+  <!-- dependencies, repositories, pluginRepositories unchanged -->
 
-  </plugins>
-</build>
-
+</project>
 
   <dependencies>
     <dependency>
